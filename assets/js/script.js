@@ -1,74 +1,108 @@
+// 3 issues to solve. 
 
-var topics = ["puppies", "kitties", "horses", "frogs", "kangaroo", "sloth", "dolphins", "hamster"];
-var topicId = 0; 
+// 1. cant prevent button from going if blank
+// 2. cant organize gif rating and blocks 
+// 3. do i need a remove button?
+// 4. I need to initalize with a gif
+var topics = ["Obama", "Lebron", "Cash", "AFV", "kangaroo", "sloth", "dolphins", "hamster"];
+var newTopic = "Welcome";
+
+function createButtons() {
+    
+    $("#buttons").empty(); 
+    
+    for (var i = 0; i < topics.length; i++) {
+        
+        var giphyBtn = $("<button>").html(topics[i]);
+        giphyBtn.attr("data-name", topics[i]);
+        giphyBtn.css("text-transform", "uppercase")
+        giphyBtn.css("margin", "5px")
+        giphyBtn.css("background-color", "#202A25")
+        giphyBtn.css("color", "white");
+        giphyBtn.addClass("cbutton");
+        $("#buttons").append(giphyBtn);
+    };
+};
+
+function addButton() {
+    
+    $("#addGifBtn").on("click", function () {
+        event.preventDefault(); 
+    
+        var newTopic = $("#giphy-input").val().trim(); 
+        topics.push(newTopic);
+        console.log("new topic: " + newTopic);
+        console.log("topics array: " + topics);
+        createButtons(); 
+        $("#giphy-input").val(""); 
+    });
+    
+    
+}
 
 
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + topics[topicId] + "&api_key=AGOnLXwDOWiIu3oC7OMWNFsQCMAElFt4&limit=10";
+    $("#removeBtn").on("click", function () {
+        event.preventDefault(); 
+        //remove from the array as opposed to removing from div
+        $("#buttons").empty(); 
+    });
+
+
+function getGifs() {
+    // this is the key to the solution right here I believe
+
+    var newTopic = $(this).attr("data-name");
+
+    console.log(newTopic);
+    
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + newTopic + "&api_key=AGOnLXwDOWiIu3oC7OMWNFsQCMAElFt4&limit=10";
     
     $.ajax({
         url: queryURL,
         method: "GET"
         
     }).then(function(response){ 
-
-        $("#addGifBtn").on("click", function() {
-
-            event.preventDefault(); 
-            var newGiphy = $("#giphy-input").val();
-            topics.push(newGiphy);
-            console.log("newgiphy value: " + newGiphy);
-            createButtons(); 
-        
-        });
-
-        $(".cbutton").on("click", function () {
-
-            // event.preventDefault(); 
-
-            var val = $(this).attr("data-name");
-            console.log("button value: " + topicId);
-            createGifs(); 
-        
-        })
-
-            //create as many buttons as there are arrays and append to the buttons div 
-        function createButtons() {
-
-            $("#buttons").empty(); 
-
-            for (var i = 0; i < topics.length; i++) {
-                
-                var giphyBtn = $("<button>").html(topics[i]);
-                giphyBtn.attr("data-name", topics[i]);
-                giphyBtn.addClass("cbutton");
-                $("#buttons").append(giphyBtn);
-            };
-        };
-            //create an image with the image src for a fixed gif
-        function createGifs() {
-
-            $("#gifs").empty(); 
-
-            for (var i = 0; i < 11; i++)  {
-                var giphyBox = $("<img>").attr("src", response.data[i].images.fixed_height_small.url);
-                
-                $("#gifs").append(giphyBox);
-                                
-            };
-        };
-
-            createButtons();
-            createGifs(); 
+        console.log(response);
+        $("#gifs").empty(); 
     
+            
+            for (var i = 0; i < response.data.length; i++)  {
+                
+                var theGif = $("<img>");
+                theGif.addClass("theGif");
+                theGif.attr("src",          response.data[i].images.fixed_width_still.url);
+                theGif.attr("data-still",   response.data[i].images.fixed_width_still.url)
+                theGif.attr("data-animate", response.data[i].images.fixed_width.url);
+                theGif.attr("data-state", "still");
+
+                // need to find a way to append to a relative position of the img element. 
+                var gifRating = $("<div>");
+                gifRating.html("GIF Rating: " + response.data[i].rating);
+                gifRating.addClass("gifRating");
+                gifRating.css("text-transform", "uppercase")  
+
+                $("#gifs").append(theGif);
+                $("#ratings").append(gifRating);
+                // gifRating)
+                
+            };
+            
+        });
+    };
+    createButtons(); 
+    getGifs(); 
+    addButton();
+    $(document).on("click", ".cbutton", getGifs);
+    $(document).on("click", ".theGif", function() {
+
+        if ($(this).attr("data-state") === "still") {
+            
+            $(this).attr("src", $(this).attr("data-animate"));
+            $(this).attr("data-state", "animate");
+        } else { 
+            
+            $(this).attr("src", $(this).attr("data-still"));
+            $(this).attr("data-state", $(this).attr("still"));
+            
+        }
     });
-
-
-
-
-
-
-
-
-// to create a button, give it a class. 
-
-// when you click on a button, identify the id of that button and use the following

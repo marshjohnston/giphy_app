@@ -1,0 +1,67 @@
+.theGif {
+float: left; 
+border-style: solid; 
+margin: 10px; 
+border-radius: 5px; 
+border-width: 1px; 
+
+ 
+}
+
+#addGifBtn {
+    margin-top: 10px; 
+}
+
+.cbutton {
+    border-style: solid; 
+    border-width: 1px; 
+    border-width:1px; 
+    padding: 10px; 
+    margin: 5px;
+    border-radius: 5px;
+    margin: 0 auto; 
+}
+
+
+form {
+    text-align: center; 
+    padding-bottom: 40px; 
+}
+
+html {
+    background: url(https://images5.alphacoders.com/492/492784.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#addYourGif {
+    font-family: 'Bangers', cursive;
+    color: white; 
+    font-size: 20px; 
+    margin-right: 10px; 
+}
+
+
+#header {
+    font-family: 'Bangers', cursive;
+    padding: 20px; 
+    border-radius: 5px; 
+    color: white; 
+    text-align: center; 
+    font-size: 72px;
+    background-image: url("assets/");
+}
+
+.gifRating {
+    font-family: Arial, Helvetica, sans-serif;
+    color: white; 
+
+}
+
+
+/* font-family: 'Amatic SC', cursive;
+font-family: 'Permanent Marker', cursive;
+font-family: 'Playfair Display SC', serif;
+font-family: 'Bangers', cursive; */
